@@ -1,26 +1,26 @@
+import { Entypo, Feather, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
+import { useState } from "react";
 import {
+  Dimensions,
+  Image,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
-  View,
-  SafeAreaView,
-  Dimensions,
-  Platform,
-  StatusBar,
-  ScrollView,
   TextInput,
   TouchableOpacity,
-  ImageBackground,
-  Image,
+  View,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import {
   Avatar,
   Button,
   DefaultTheme,
   Provider as PaperProvider,
 } from "react-native-paper";
-import { Entypo, FontAwesome5, FontAwesome, Feather } from "@expo/vector-icons";
-import { useState } from "react";
+import Carousel from "react-native-snap-carousel";
 
 const { height, width } = Dimensions.get("window");
 
@@ -34,7 +34,6 @@ const theme = {
 };
 
 export default function App() {
-  const [tab, setTab] = useState("Recommended");
   return (
     <PaperProvider theme={theme}>
       <SafeAreaView
@@ -44,247 +43,137 @@ export default function App() {
           paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
         }}
       >
-        <ScrollView stickyHeaderIndices={[2]}>
-          <View
-            style={{
-              width,
-              paddingTop: 20,
-              paddingHorizontal: 0.07 * width,
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <View
-              style={{
-                width: width * 0.65,
-                paddingVertical: 10,
-                backgroundColor: "#f3f3f3",
-                borderRadius: 8,
-                flexDirection: "row",
-                paddingLeft: 12,
-                alignItems: "center",
+        <ScrollView>
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <Carousel
+              firstItem={1}
+              data={[
+                { title: "the" },
+                { title: "the" },
+                { title: "the" },
+                { title: "the" },
+              ]}
+              renderItem={({ item, index }: any): any => {
+                return (
+                  <View
+                    style={{ alignItems: "center", justifyContent: "center" }}
+                  >
+                    <Image
+                      style={{
+                        width: "100%",
+                        height: 0.6 * height,
+                      }}
+                      source={{
+                        uri: "https://image.uniqlo.com/UQ/ST3/in/imagesgoods/439702/item/ingoods_64_439702.jpg?width=1600&impolicy=quality_75",
+                      }}
+                    />
+                  </View>
+                );
               }}
-            >
-              <Feather name="search" size={24} color="black" />
-              <TextInput
-                style={{ paddingLeft: 12, fontSize: 16 }}
-                placeholder="Search clothes..."
-              />
-            </View>
-            <View
-              style={{
-                width: width * 0.15,
-                backgroundColor: "#f3f3f3",
-                paddingVertical: 15,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 8,
-                paddingHorizontal: 10,
-              }}
-            >
-              <FontAwesome5 name="bell" size={24} color="black" />
-            </View>
+              sliderWidth={width}
+              itemWidth={width * 0.8}
+            />
           </View>
           <View
             style={{
-              width: width * 0.85,
-              marginTop: 40,
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: 8,
-              marginHorizontal: 0.07 * width,
-              height: height * 0.19,
-              backgroundColor: "white",
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 5,
-              },
-              shadowOpacity: 0.34,
-              shadowRadius: 6.27,
-              elevation: 10,
+              marginHorizontal: width * 0.1,
+              marginTop: 20,
+              marginBottom: height * 0.04,
             }}
           >
-            <ImageBackground
-              source={{
-                uri: "https://img.freepik.com/free-photo/men-shoes_1303-5889.jpg?w=1060",
-              }}
+            <Text
               style={{
-                borderRadius: 18,
-                flex: 1,
-                height: "100%",
-                width: "100%",
-                backgroundColor: "white",
+                color: "gray",
+                fontWeight: "600",
+                fontSize: 18,
+                letterSpacing: 1,
               }}
-              resizeMode="cover"
-              blurRadius={5}
-              borderRadius={8}
             >
-              <View
+              OUTER
+            </Text>
+            <View style={{ marginVertical: 10 }}>
+              <Text style={{ fontWeight: "700", fontSize: 20 }}>
+                Jas Oversized
+              </Text>
+            </View>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <Text
                 style={{
-                  justifyContent: "flex-start",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  flex: 1,
-                  paddingLeft: 16,
+                  backgroundColor: "#f35a5a",
+                  paddingVertical: 4,
+                  paddingHorizontal: 12,
+                  borderRadius: 6,
+                  color: "white",
                 }}
               >
-                <View>
-                  <Text
-                    style={{
-                      fontSize: 30,
-                      color: "white",
-                    }}
-                  >
-                    Special
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 30,
-                      color: "white",
-                      textAlign: "center",
-                    }}
-                  >
-                    Sale
-                  </Text>
-                </View>
-              </View>
-            </ImageBackground>
-          </View>
-          <View style={{ marginTop: 35 }}>
-            <ScrollView style={{ flexDirection: "row" }} horizontal>
-              <View style={{ flexDirection: "row", backgroundColor: "white" }}>
-                {["Recommended", "Outer", "Shirt", "Sweater"].map((data) => (
-                  <TouchableOpacity
+                -25%
+              </Text>
+              <Text>4.3 (342 reviews)</Text>
+            </View>
+
+            <View style={{ marginVertical: 12 }}>
+              <Text style={{ fontSize: 16, fontWeight: "700" }}>
+                Information
+              </Text>
+            </View>
+            <Text>
+              Oversized suit made of woven fabric with notch caller, one button
+              and one button front. and front pocket...{" "}
+              <Text style={{ fontSize: 16, fontWeight: "bold" }}>Readmore</Text>
+            </Text>
+            <ScrollView horizontal>
+              <View style={{ flexDirection: "row" }}>
+                {[1, 23, 4, 5, 6, 7].map((data, i, arr) => (
+                  <Image
                     key={data}
-                    onPress={() => {
-                      console.log("200", 200);
-                      setTab(data);
+                    style={{
+                      width: 0.1 * height,
+                      height: 0.1 * height,
+                      marginRight: i + 1 === arr.length ? 0 : 8,
+                      marginLeft: i === 0 ? 0 : 8,
+                      borderWidth: 2,
+                      borderColor: "black",
+                      borderRadius: 8,
                     }}
-                  >
-                    <View
-                      style={{
-                        backgroundColor: tab === data ? "black" : "white",
-                        paddingHorizontal: 16,
-                        paddingVertical: 10,
-                        borderRadius: 6,
-                        marginHorizontal: 10,
-                        shadowColor: "#000",
-                        shadowOffset: {
-                          width: 0,
-                          height: 1,
-                        },
-                        shadowOpacity: 0.2,
-                        shadowRadius: 1.41,
-                        elevation: 2,
-                        marginBottom: 8,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: 18,
-                          color: tab === data ? "white" : "black",
-                        }}
-                      >
-                        {data}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
+                    source={{
+                      uri: "https://image.uniqlo.com/UQ/ST3/in/imagesgoods/439702/item/ingoods_64_439702.jpg?width=1600&impolicy=quality_75",
+                    }}
+                  />
                 ))}
               </View>
             </ScrollView>
           </View>
-          {/* <ScrollView> */}
-          <View
-            style={{
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "space-around",
-            }}
-          >
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((data) => (
-              <View
-                key={data}
-                style={{
-                  width: width * 0.4,
-                  height: height * 0.3,
-                  marginVertical: 18,
-                }}
-              >
-                <ImageBackground
-                  source={{
-                    uri: "https://img.freepik.com/free-photo/girl-winter-city_1157-17487.jpg?w=1060",
-                  }}
-                  style={{
-                    flex: 1,
-                    height: "100%",
-                    width: "100%",
-                    backgroundColor: "white",
-                  }}
-                  resizeMode="cover"
-                  borderRadius={4}
-                >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "flex-end",
-                      marginRight: 12,
-                      marginTop: 12,
-                    }}
-                  >
-                    <View
-                      style={{
-                        backgroundColor: "#f35a5a",
-                        paddingVertical: 4,
-                        paddingHorizontal: 12,
-                        borderRadius: 6,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: "white",
-                          fontSize: 16,
-                          fontWeight: "bold",
-                        }}
-                      >
-                        -25%
-                      </Text>
-                    </View>
-                  </View>
-                </ImageBackground>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginTop: 8,
-                    alignItems: "center",
-                  }}
-                >
-                  <View>
-                    <Text
-                      style={{
-                        fontWeight: "600",
-                        fontSize: 16,
-                      }}
-                    >
-                      Yellow Blazer
-                    </Text>
-                    <Text
-                      style={{
-                        color: "#f35a5a",
-                        fontWeight: "600",
-                        fontSize: 16,
-                      }}
-                    >
-                      $263
-                    </Text>
-                  </View>
-                  <Entypo name="heart-outlined" size={24} color="black" />
-                </View>
-              </View>
-            ))}
-          </View>
         </ScrollView>
+        <View
+          style={{
+            width,
+            height: height * 0.08,
+            backgroundColor: "white",
+            bottom: 0,
+            flexDirection: "row",
+            justifyContent: "space-around",
+            marginVertical: 6,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontWeight: "700", fontSize: 24 }}>$243.00</Text>
+          <TouchableOpacity>
+            <View
+              style={{
+                backgroundColor: "black",
+                paddingVertical: 8,
+                paddingHorizontal: 18,
+                borderRadius: 4,
+              }}
+            >
+              <Text style={{ color: "white", fontWeight: "700", fontSize: 16 }}>
+                + Add to Cart
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     </PaperProvider>
   );
