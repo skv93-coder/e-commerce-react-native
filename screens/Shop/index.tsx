@@ -24,7 +24,7 @@ import {
 
 const { height, width } = Dimensions.get("window");
 
-export default function Shop() {
+export default function Shop({ navigation }) {
   const [tab, setTab] = useState("Recommended");
 
   return (
@@ -208,9 +208,9 @@ export default function Shop() {
                 marginVertical: 18,
               }}
             >
-              <ImageBackground
-                source={{
-                  uri: "https://img.freepik.com/free-photo/girl-winter-city_1157-17487.jpg?w=1060",
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("ShopView");
                 }}
                 style={{
                   flex: 1,
@@ -218,37 +218,49 @@ export default function Shop() {
                   width: "100%",
                   backgroundColor: "white",
                 }}
-                resizeMode="cover"
-                borderRadius={4}
               >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "flex-end",
-                    marginRight: 12,
-                    marginTop: 12,
+                <ImageBackground
+                  source={{
+                    uri: "https://img.freepik.com/free-photo/girl-winter-city_1157-17487.jpg?w=1060",
                   }}
+                  style={{
+                    flex: 1,
+                    height: "100%",
+                    width: "100%",
+                    backgroundColor: "white",
+                  }}
+                  resizeMode="cover"
+                  borderRadius={4}
                 >
                   <View
                     style={{
-                      backgroundColor: "#f35a5a",
-                      paddingVertical: 4,
-                      paddingHorizontal: 12,
-                      borderRadius: 6,
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
+                      marginRight: 12,
+                      marginTop: 12,
                     }}
                   >
-                    <Text
+                    <View
                       style={{
-                        color: "white",
-                        fontSize: 16,
-                        fontWeight: "bold",
+                        backgroundColor: "#f35a5a",
+                        paddingVertical: 4,
+                        paddingHorizontal: 12,
+                        borderRadius: 6,
                       }}
                     >
-                      -25%
-                    </Text>
+                      <Text
+                        style={{
+                          color: "white",
+                          fontSize: 16,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        -25%
+                      </Text>
+                    </View>
                   </View>
-                </View>
-              </ImageBackground>
+                </ImageBackground>
+              </TouchableOpacity>
               <View
                 style={{
                   flexDirection: "row",

@@ -21,6 +21,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./screens/Home";
 import Shop from "./screens/Shop";
 import MyTabBar from "./componets/MyTabs";
+import ProductView from "./screens/ProductView";
 
 const { height, width } = Dimensions.get("window");
 
@@ -36,6 +37,18 @@ const theme = {
 export default function App() {
   const Tabs = createBottomTabNavigator();
   const Stack = createNativeStackNavigator();
+  const HomeStack = () => (
+    <Stack.Navigator>
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        component={Shop}
+        name="Shop"
+      />
+      <Stack.Screen component={ProductView} name="ShopView" />
+    </Stack.Navigator>
+  );
   const TabsStack = () => (
     <Tabs.Navigator>
       <Tabs.Screen
@@ -50,7 +63,7 @@ export default function App() {
           tabBarShowLabel: false,
         }}
         name="Home"
-        component={Shop}
+        component={HomeStack}
       />
       <Tabs.Screen
         options={{
@@ -105,15 +118,15 @@ export default function App() {
             options={{
               headerShown: false,
             }}
-            name="ShopStack"
-            component={TabsStack}
+            name="Start"
+            component={Home}
           />
           <Stack.Screen
             options={{
               headerShown: false,
             }}
-            name="Start"
-            component={Home}
+            name="ShopStack"
+            component={TabsStack}
           />
         </Stack.Navigator>
       </NavigationContainer>

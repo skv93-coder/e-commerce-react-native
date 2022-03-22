@@ -14,7 +14,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 
 const { height, width } = Dimensions.get("window");
 
-export default function Home() {
+export default function Home({ navigation }) {
   return (
     <LinearGradient colors={["#2d2d2d", "#101010"]} style={{ flex: 1 }}>
       <ScrollView>
@@ -107,7 +107,15 @@ export default function Home() {
             free vouchers here!
           </Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate(
+              "ShopStack"
+              // { screen: "Home" },
+              // navigation.navigate("Shop")
+            );
+          }}
+        >
           <View
             style={{
               width,
