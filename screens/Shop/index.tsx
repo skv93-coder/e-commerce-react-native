@@ -1,6 +1,8 @@
+import { useQuery } from "@apollo/client";
 import { Entypo, Feather, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
+import * as ImagePicker from "expo-image-picker";
 import {
   Dimensions,
   Image,
@@ -15,17 +17,16 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import {
-  Avatar,
-  Button,
-  DefaultTheme,
-  Provider as PaperProvider,
-} from "react-native-paper";
+import { Button, Provider as PaperProvider } from "react-native-paper";
+import { GET_PRODUCTS } from "../../Api/Product/query";
 
 const { height, width } = Dimensions.get("window");
 
-export default function Shop({ navigation }) {
+export default function Shop({ navigation }: any) {
+  const products = useQuery(GET_PRODUCTS);
+  console.log("products", products.data);
   const [tab, setTab] = useState("Recommended");
+  const [image, setImage] = useState<any>(null);
 
   return (
     <SafeAreaView

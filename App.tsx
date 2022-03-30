@@ -10,6 +10,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  gql,
+} from "@apollo/client";
+import {
   Avatar,
   Button,
   DefaultTheme,
@@ -22,6 +28,7 @@ import Home from "./screens/Home";
 import Shop from "./screens/Shop";
 import MyTabBar from "./componets/MyTabs";
 import ProductView from "./screens/ProductView";
+import SignUp from "./screens/SignUp";
 
 const { height, width } = Dimensions.get("window");
 
@@ -33,6 +40,10 @@ const theme = {
     accent: "yellow",
   },
 };
+const client = new ApolloClient({
+  uri: "http://192.168.43.189:400",
+  cache: new InMemoryCache(),
+});
 
 export default function App() {
   const Tabs = createBottomTabNavigator();
@@ -111,26 +122,28 @@ export default function App() {
   );
 
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            options={{
-              headerShown: false,
-            }}
-            name="Start"
-            component={Home}
-          />
-          <Stack.Screen
-            options={{
-              headerShown: false,
-            }}
-            name="ShopStack"
-            component={TabsStack}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </PaperProvider>
+    <ApolloProvider client={client}>
+      <PaperProvider theme={theme}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              options={{
+                headerShown: false,
+              }}
+              name="Start"
+              component={SignUp}
+            />
+            <Stack.Screen
+              options={{
+                headerShown: false,
+              }}
+              name="ShopStack"
+              component={TabsStack}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
+    </ApolloProvider>
   );
 }
 
