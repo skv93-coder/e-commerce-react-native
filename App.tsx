@@ -1,36 +1,16 @@
-import {
-  Entypo,
-  Feather,
-  FontAwesome,
-  FontAwesome5,
-  Ionicons,
-  AntDesign,
-} from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
-import { useState } from "react";
-import { Dimensions, StyleSheet } from "react-native";
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  gql,
-} from "@apollo/client";
-import {
-  Avatar,
-  Button,
-  DefaultTheme,
-  Provider as PaperProvider,
-} from "react-native-paper";
+import { Entypo, FontAwesome5, AntDesign } from "@expo/vector-icons";
+import { StyleSheet } from "react-native";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./screens/Home";
 import Shop from "./screens/Shop";
-import MyTabBar from "./componets/MyTabs";
 import ProductView from "./screens/ProductView";
-import SignUp from "./screens/SignUp";
-
-const { height, width } = Dimensions.get("window");
+import SignUpView from "./screens/SignUpView";
+import WishList from "./screens/WishList";
+import Login from "./screens/Login";
 
 const theme = {
   ...DefaultTheme,
@@ -48,6 +28,17 @@ const client = new ApolloClient({
 export default function App() {
   const Tabs = createBottomTabNavigator();
   const Stack = createNativeStackNavigator();
+  const WishListStack = () => (
+    <Stack.Navigator>
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="WishList"
+        component={WishList}
+      />
+      <Stack.Screen name="SignUpView" component={SignUpView} />
+      <Stack.Screen name="Login" component={Login} />
+    </Stack.Navigator>
+  );
   const HomeStack = () => (
     <Stack.Navigator>
       <Stack.Screen
@@ -88,7 +79,7 @@ export default function App() {
           tabBarShowLabel: false,
         }}
         name="Shop-1"
-        component={Shop}
+        component={WishListStack}
       />
       <Tabs.Screen
         options={{
@@ -131,7 +122,7 @@ export default function App() {
                 headerShown: false,
               }}
               name="Start"
-              component={SignUp}
+              component={Home}
             />
             <Stack.Screen
               options={{
