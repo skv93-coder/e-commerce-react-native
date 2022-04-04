@@ -11,6 +11,7 @@ import ProductView from "./screens/ProductView";
 import SignUpView from "./screens/SignUpView";
 import WishList from "./screens/WishList";
 import Login from "./screens/Login";
+import SignUp from "./screens/SignUp";
 
 const theme = {
   ...DefaultTheme,
@@ -37,6 +38,7 @@ export default function App() {
       />
       <Stack.Screen name="SignUpView" component={SignUpView} />
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="SignUp" component={SignUp} />
     </Stack.Navigator>
   );
   const HomeStack = () => (

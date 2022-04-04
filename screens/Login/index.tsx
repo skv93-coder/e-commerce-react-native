@@ -6,6 +6,8 @@ import {
   ScrollView,
   Dimensions,
   TextInput,
+  findNodeHandle,
+  TouchableOpacity,
 } from "react-native";
 import Button from "../../componets/Button";
 import Input from "../../componets/Input";
@@ -15,10 +17,21 @@ import GlobalStyles from "../../GlobalStyles";
 
 const { height, width } = Dimensions.get("window");
 
-export default function Login() {
+export default function Login({ navigation }) {
+  const scrollRef = React.useRef();
+  const email = React.useRef();
+  const handleFocus = (ev) => {
+    email.current.measureLayout(findNodeHandle(scrollRef.current), (x, y) => {
+      // console.log("x,y", x, y, ev);
+      scrollRef.current.scrollTo({ x: 0, y: y, animated: true });
+    });
+  };
   return (
     <SafeAreaViewCustom>
-      <ScrollView style={{ flex: 1, backgroundColor: "rgb(254 254 254)" }}>
+      <ScrollView
+        ref={scrollRef}
+        style={{ flex: 1, backgroundColor: "rgb(254 254 254)" }}
+      >
         <View
           style={{
             marginHorizontal: width * 0.1,
@@ -58,7 +71,11 @@ export default function Login() {
             marginTop: 22,
           }}
         >
-          <Input placeholder="Email Address" />
+          <Input
+            onFocus={(ev) => handleFocus(ev, "email")}
+            ref={email}
+            placeholder="Email Address"
+          />
         </View>
         <View
           style={{
@@ -66,7 +83,10 @@ export default function Login() {
             backgroundColor: "white",
           }}
         >
-          <Input placeholder="Password" />
+          <Input
+            onFocus={(ev) => handleFocus(ev, "password")}
+            placeholder="Password"
+          />
         </View>
         <View
           style={{
@@ -78,14 +98,20 @@ export default function Login() {
         </View>
         <View style={styles.btnUnderTxt}>
           <Text style={GlobalStyles.textBold}>Forgot Your Password?</Text>
-          <Text
-            style={[
-              GlobalStyles.textBold,
-              GlobalStyles.textDecorationUnderline,
-            ]}
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("SignUp");
+            }}
           >
-            Signup
-          </Text>
+            <Text
+              style={[
+                GlobalStyles.textBold,
+                GlobalStyles.textDecorationUnderline,
+              ]}
+            >
+              Signup
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaViewCustom>
