@@ -18,18 +18,22 @@ import GlobalStyles from "../../GlobalStyles";
 const { height, width } = Dimensions.get("window");
 
 export default function Login({ navigation }) {
-  const scrollRef = React.useRef();
-  const email = React.useRef();
-  const handleFocus = (ev) => {
-    email.current.measureLayout(findNodeHandle(scrollRef.current), (x, y) => {
-      // console.log("x,y", x, y, ev);
-      scrollRef.current.scrollTo({ x: 0, y: y, animated: true });
-    });
+  const ref = React.useRef({ email: null, password: null, scrollRef: null });
+
+  const handleFocus = (idx: string) => {
+    const { current }: any = ref;
+    current[idx].measureLayout(
+      findNodeHandle(ref.current.scrollRef),
+      (x: Number, y: Number) => {
+        current.scrollRef.scrollTo({ x: 0, y: y, animated: true });
+      }
+    );
   };
+
   return (
     <SafeAreaViewCustom>
       <ScrollView
-        ref={scrollRef}
+        ref={(ref_: any) => (ref.current.scrollRef = ref_)}
         style={{ flex: 1, backgroundColor: "rgb(254 254 254)" }}
       >
         <View
@@ -72,8 +76,8 @@ export default function Login({ navigation }) {
           }}
         >
           <Input
-            onFocus={(ev) => handleFocus(ev, "email")}
-            ref={email}
+            onFocus={() => handleFocus("email")}
+            ref={(ref_: any) => (ref.current.email = ref_)}
             placeholder="Email Address"
           />
         </View>
@@ -84,8 +88,10 @@ export default function Login({ navigation }) {
           }}
         >
           <Input
-            onFocus={(ev) => handleFocus(ev, "password")}
+            ref={(ref_: any) => (ref.current.password = ref_)}
+            onFocus={() => handleFocus("password")}
             placeholder="Password"
+            autoCompleteType="password"
           />
         </View>
         <View

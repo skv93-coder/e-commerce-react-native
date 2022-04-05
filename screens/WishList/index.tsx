@@ -33,7 +33,7 @@ export default function WishList({ navigation }) {
               btnTxt="Let's Log in"
               icon={<AntDesign name="arrowright" size={22} color="white" />}
               onPress={() => {
-                navigation.navigate("SignUpView");
+                navigation.navigate("Login");
               }}
             />
           </View>

@@ -1,5 +1,12 @@
 import React from "react";
-import { ScrollView, Text, View, Dimensions, StyleSheet } from "react-native";
+import {
+  ScrollView,
+  Text,
+  View,
+  Dimensions,
+  StyleSheet,
+  findNodeHandle,
+} from "react-native";
 import Button from "../../componets/Button";
 import Input from "../../componets/Input";
 import { bigHeadingFont } from "../../constants/heading";
@@ -8,6 +15,23 @@ import GlobalStyles from "../../GlobalStyles";
 const { width, height } = Dimensions.get("window");
 
 export default function SignUp() {
+  const ref = React.useRef({
+    name: null,
+    email: null,
+    password: null,
+    scrollRef: null,
+  });
+
+  const handleFocus = (idx: string) => {
+    const { current }: any = ref;
+    current[idx].measureLayout(
+      findNodeHandle(ref.current.scrollRef),
+      (x: Number, y: Number) => {
+        current.scrollRef.scrollTo({ x: 0, y: y, animated: true });
+      }
+    );
+  };
+
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
       <View
@@ -49,7 +73,10 @@ export default function SignUp() {
           marginTop: 22,
         }}
       >
-        <Input placeholder="Name" />
+        <Input
+          ref={(ref_: any) => (ref.current.name = ref_)}
+          placeholder="Name"
+        />
       </View>
       <View
         style={{
@@ -57,7 +84,10 @@ export default function SignUp() {
           backgroundColor: "white",
         }}
       >
-        <Input placeholder="Email Address" />
+        <Input
+          ref={(ref_: any) => (ref.current.email = ref_)}
+          placeholder="Email Address"
+        />
       </View>
       <View
         style={{
@@ -65,7 +95,11 @@ export default function SignUp() {
           backgroundColor: "white",
         }}
       >
-        <Input placeholder="Password" />
+        <Input
+          ref={(ref_: any) => (ref.current.password = ref_)}
+          placeholder="Password"
+          autoCompleteType="password"
+        />
       </View>
       <View
         style={{

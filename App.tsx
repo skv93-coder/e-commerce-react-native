@@ -36,7 +36,7 @@ export default function App() {
         name="WishList"
         component={WishList}
       />
-      <Stack.Screen name="SignUpView" component={SignUpView} />
+      {/* <Stack.Screen name="SignUpView" component={SignUpView} /> */}
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="SignUp" component={SignUp} />
     </Stack.Navigator>

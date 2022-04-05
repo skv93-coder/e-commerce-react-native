@@ -1,8 +1,16 @@
-import React from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Feather } from "@expo/vector-icons";
 
 export default React.forwardRef(
-  ({ inputBoxStyle, icon, touched, error, label, ...props }, ref) => {
+  ({ inputBoxStyle, icon, touched, error, label, ...props }: any, ref) => {
+    const [passwordVisible, setPasswordVisible] = useState(false);
     return (
       <View style={[styles.inputBoxStyle, inputBoxStyle]}>
         {label && (
@@ -39,7 +47,28 @@ export default React.forwardRef(
             underlineColorAndroid="transparent"
             style={[styles.input]}
             placeholderTextColor="#718096"
+            secureTextEntry={passwordVisible}
           />
+          {props.autoCompleteType === "password" && (
+            <TouchableOpacity
+              style={styles.passwordIcon}
+              onPress={(ev) => {
+                ev.stopPropagation();
+                ev.preventDefault();
+                setPasswordVisible((prev) => !prev);
+              }}
+            >
+              <View>
+                <Text style={styles["password__icon--sze"]}>
+                  <Feather
+                    name={passwordVisible ? "eye" : "eye-off"}
+                    size={18}
+                    color="black"
+                  />
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     );
@@ -55,5 +84,14 @@ const styles = StyleSheet.create({
   input: {
     width: "100%",
     height: "100%",
+  },
+  passwordIcon: {
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+  },
+  "password__icon--sze": {
+    width: 20 * 1.1,
+    height: 20 * 1.1,
   },
 });
