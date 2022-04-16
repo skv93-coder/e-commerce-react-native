@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import {
   ScrollView,
   Text,
@@ -6,20 +6,40 @@ import {
   Dimensions,
   StyleSheet,
   findNodeHandle,
+  TouchableOpacity,
 } from "react-native";
 import Button from "../../componets/Button";
 import Input from "../../componets/Input";
 import { bigHeadingFont } from "../../constants/heading";
 import GlobalStyles from "../../GlobalStyles";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import InputError from "../../componets/InputError";
 
 const { width, height } = Dimensions.get("window");
 
-export default function SignUp() {
+const signUpSchema = Yup.object().shape({
+  email: Yup.string().email().required(),
+  name: Yup.string().min(2).required(),
+  password: Yup.string().min(6).required(),
+});
+
+export default function SignUp({ navigation }) {
   const ref = React.useRef({
     name: null,
     email: null,
     password: null,
     scrollRef: null,
+  });
+
+  const handleSubmitError = (val) => {
+    console.log("val :>> ", val);
+  };
+
+  const { handleChange, handleSubmit, errors } = useFormik({
+    initialValues: { email: "", name: "", password: "" },
+    validationSchema: signUpSchema,
+    onSubmit: handleSubmitError,
   });
 
   const handleFocus = (idx: string) => {
@@ -66,6 +86,7 @@ export default function SignUp() {
           Get Started
         </Text>
       </View>
+
       <View
         style={{
           marginHorizontal: width * 0.1,
@@ -76,7 +97,9 @@ export default function SignUp() {
         <Input
           ref={(ref_: any) => (ref.current.name = ref_)}
           placeholder="Name"
+          onChangeText={handleChange("name")}
         />
+        {errors.name && <InputError error={errors.name} />}
       </View>
       <View
         style={{
@@ -87,7 +110,9 @@ export default function SignUp() {
         <Input
           ref={(ref_: any) => (ref.current.email = ref_)}
           placeholder="Email Address"
+          onChangeText={handleChange("email")}
         />
+        {errors.email && <InputError error={errors.email} />}
       </View>
       <View
         style={{
@@ -99,7 +124,9 @@ export default function SignUp() {
           ref={(ref_: any) => (ref.current.password = ref_)}
           placeholder="Password"
           autoCompleteType="password"
+          onChangeText={handleChange("password")}
         />
+        {errors.password && <InputError error={errors.password} />}
       </View>
       <View
         style={{
@@ -107,15 +134,24 @@ export default function SignUp() {
           marginTop: 28,
         }}
       >
-        <Button btnTxt="Sign up" />
+        <Button btnTxt="Sign up" onPress={() => handleSubmit()} />
       </View>
       <View style={styles.btnUnderTxt}>
         <Text style={GlobalStyles.textBold}>Forgot Your Password?</Text>
-        <Text
-          style={[GlobalStyles.textBold, GlobalStyles.textDecorationUnderline]}
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Login");
+          }}
         >
-          Signup
-        </Text>
+          <Text
+            style={[
+              GlobalStyles.textBold,
+              GlobalStyles.textDecorationUnderline,
+            ]}
+          >
+            Sign in
+          </Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

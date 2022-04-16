@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 interface Props {
-  onPress?: (ev: GestureResponderEvent) => void;
+  onPress?: (ev?: GestureResponderEvent) => void;
   buttonBoxStyle?: ViewStyle;
   btnTxtStyle?: TextStyle;
   btnTxt: String;

@@ -24,9 +24,8 @@ const { height, width } = Dimensions.get("window");
 
 export default function Shop({ navigation }: any) {
   const products = useQuery(GET_PRODUCTS);
-  console.log("products", products.data);
+
   const [tab, setTab] = useState("Recommended");
-  const [image, setImage] = useState<any>(null);
 
   return (
     <SafeAreaView

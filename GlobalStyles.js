@@ -6,4 +6,8 @@ export default StyleSheet.create({
     fontWeight: "bold",
   },
   textDecorationUnderline: { textDecorationLine: "underline" },
+  errorInput: {
+    color: "red",
+    fontSize: 16,
+  },
 });
