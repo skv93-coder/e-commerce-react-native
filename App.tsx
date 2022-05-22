@@ -1,6 +1,14 @@
 import { Entypo, FontAwesome5, AntDesign } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  useMutation,
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { onError } from "@apollo/client/link/error";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -8,10 +16,12 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./screens/Home";
 import Shop from "./screens/Shop";
 import ProductView from "./screens/ProductView";
-import SignUpView from "./screens/SignUpView";
 import WishList from "./screens/WishList";
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
+import { useEffect } from "react";
+import AsyncStorageLib from "@react-native-async-storage/async-storage";
+import { LOGIN_USER } from "./Api/User/mutation";
 
 const theme = {
   ...DefaultTheme,
@@ -21,14 +31,26 @@ const theme = {
     accent: "yellow",
   },
 };
-const client = new ApolloClient({
-  uri: "http://192.168.43.189:400",
-  cache: new InMemoryCache(),
-});
+let token: any;
 
 export default function App() {
+  const withToken = setContext(async () => {
+    if (token) {
+      return { token };
+    }
+    token = await AsyncStorage.getItem("token");
+    return { token };
+  });
+
+  const client = new ApolloClient({
+    uri: "http://192.168.43.189:400",
+    cache: new InMemoryCache(),
+  });
+
   const Tabs = createBottomTabNavigator();
   const Stack = createNativeStackNavigator();
+  // console.log("client", client.cache);
+
   const WishListStack = () => (
     <Stack.Navigator>
       <Stack.Screen
@@ -113,6 +135,16 @@ export default function App() {
       />
     </Tabs.Navigator>
   );
+  const authChecker = async () => {
+    const token = await AsyncStorage.getItem("token");
+    console.log("token", token);
+    if (token) {
+    }
+  };
+
+  useEffect(() => {
+    authChecker();
+  }, [AsyncStorageLib]);
 
   return (
     <ApolloProvider client={client}>

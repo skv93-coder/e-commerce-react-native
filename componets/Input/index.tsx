@@ -10,7 +10,7 @@ import { Feather } from "@expo/vector-icons";
 
 export default React.forwardRef(
   ({ inputBoxStyle, icon, touched, error, label, ...props }: any, ref) => {
-    const [passwordVisible, setPasswordVisible] = useState(false);
+    const [passwordVisible, setPasswordVisible] = useState(true);
     return (
       <View style={[styles.inputBoxStyle, inputBoxStyle]}>
         {label && (
@@ -47,7 +47,9 @@ export default React.forwardRef(
             underlineColorAndroid="transparent"
             style={[styles.input]}
             placeholderTextColor="#718096"
-            secureTextEntry={passwordVisible}
+            secureTextEntry={
+              props.autoCompleteType === "password" && passwordVisible
+            }
           />
           {props.autoCompleteType === "password" && (
             <TouchableOpacity
@@ -61,7 +63,7 @@ export default React.forwardRef(
               <View>
                 <Text style={styles["password__icon--sze"]}>
                   <Feather
-                    name={passwordVisible ? "eye" : "eye-off"}
+                    name={passwordVisible ? "eye-off" : "eye"}
                     size={18}
                     color="black"
                   />

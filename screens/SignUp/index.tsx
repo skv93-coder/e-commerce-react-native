@@ -15,8 +15,10 @@ import GlobalStyles from "../../GlobalStyles";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import InputError from "../../componets/InputError";
+import { useMutation, useQuery } from "@apollo/client";
+import { CREATE_USER } from "../../Api/User/mutation";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const signUpSchema = Yup.object().shape({
   email: Yup.string().email().required(),
@@ -25,6 +27,9 @@ const signUpSchema = Yup.object().shape({
 });
 
 export default function SignUp({ navigation }) {
+  const [createUser, { loading, reset, data, error }] =
+    useMutation(CREATE_USER);
+  console.log("res :>> ", data, error);
   const ref = React.useRef({
     name: null,
     email: null,
@@ -32,14 +37,19 @@ export default function SignUp({ navigation }) {
     scrollRef: null,
   });
 
-  const handleSubmitError = (val) => {
+  const onSubmit = (val) => {
     console.log("val :>> ", val);
+    createUser({
+      variables: {
+        user: val,
+      },
+    });
   };
 
   const { handleChange, handleSubmit, errors } = useFormik({
     initialValues: { email: "", name: "", password: "" },
     validationSchema: signUpSchema,
-    onSubmit: handleSubmitError,
+    onSubmit,
   });
 
   const handleFocus = (idx: string) => {

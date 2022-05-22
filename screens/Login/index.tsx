@@ -1,3 +1,5 @@
+import { useMutation } from "@apollo/client";
+import { useFormik } from "formik";
 import React from "react";
 import {
   StyleSheet,
@@ -5,21 +7,49 @@ import {
   View,
   ScrollView,
   Dimensions,
-  TextInput,
   findNodeHandle,
   TouchableOpacity,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Yup from "yup";
+import { LOGIN_USER } from "../../Api/User/mutation";
 import Button from "../../componets/Button";
 import Input from "../../componets/Input";
+import InputError from "../../componets/InputError";
 import SafeAreaViewCustom from "../../componets/SafeArea";
 import { bigHeadingFont } from "../../constants/heading";
 import GlobalStyles from "../../GlobalStyles";
 
-const { height, width } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
+
+const loginSchema = Yup.object().shape({
+  email: Yup.string().email().required(),
+  password: Yup.string().min(6).required(),
+});
 
 export default function Login({ navigation }) {
-  const ref = React.useRef({ email: null, password: null, scrollRef: null });
+  const [loginUser, { loading, reset, data, error: apiError }] =
+    useMutation(LOGIN_USER);
 
+  const ref = React.useRef({ email: null, password: null, scrollRef: null });
+  console.log("loginUser", data);
+  const onSubmit = async (val) => {
+    console.log("val :>> ", val);
+    const res = await loginUser({
+      variables: {
+        user: val,
+      },
+    }).catch((err) => {
+      console.log("err", err);
+    });
+    await AsyncStorage.setItem("token", res?.token);
+  };
+
+  const { handleChange, handleSubmit, errors } = useFormik({
+    initialValues: { email: "", password: "" },
+    validationSchema: loginSchema,
+    onSubmit,
+  });
   const handleFocus = (idx: string) => {
     const { current }: any = ref;
     current[idx].measureLayout(
@@ -30,6 +60,7 @@ export default function Login({ navigation }) {
     );
   };
 
+  // console.log("client :>> ", client.readQuery({ query: LOGIN_USER }));
   return (
     <SafeAreaViewCustom>
       <ScrollView
@@ -79,7 +110,9 @@ export default function Login({ navigation }) {
             onFocus={() => handleFocus("email")}
             ref={(ref_: any) => (ref.current.email = ref_)}
             placeholder="Email Address"
+            onChangeText={handleChange("email")}
           />
+          {errors.email && <InputError error={errors.email} />}
         </View>
         <View
           style={{
@@ -92,7 +125,9 @@ export default function Login({ navigation }) {
             onFocus={() => handleFocus("password")}
             placeholder="Password"
             autoCompleteType="password"
+            onChangeText={handleChange("password")}
           />
+          {errors.password && <InputError error={errors.password} />}
         </View>
         <View
           style={{
@@ -100,7 +135,12 @@ export default function Login({ navigation }) {
             marginTop: 28,
           }}
         >
-          <Button btnTxt="Sign in" />
+          <Button
+            btnTxt="Sign in"
+            onPress={() => {
+              handleSubmit();
+            }}
+          />
         </View>
         <View style={styles.btnUnderTxt}>
           <Text style={GlobalStyles.textBold}>Forgot Your Password?</Text>
