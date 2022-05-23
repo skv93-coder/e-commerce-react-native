@@ -34,7 +34,6 @@ export default function Login({ navigation }) {
   const ref = React.useRef({ email: null, password: null, scrollRef: null });
   console.log("loginUser", data);
   const onSubmit = async (val) => {
-    console.log("val :>> ", val);
     const res = await loginUser({
       variables: {
         user: val,
@@ -42,7 +41,8 @@ export default function Login({ navigation }) {
     }).catch((err) => {
       console.log("err", err);
     });
-    await AsyncStorage.setItem("token", res?.token);
+    // console.log("val :>> ", res);
+    await AsyncStorage.setItem("token", res?.data?.login?.token);
   };
 
   const { handleChange, handleSubmit, errors } = useFormik({

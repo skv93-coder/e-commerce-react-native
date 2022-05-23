@@ -5,6 +5,8 @@ import {
   InMemoryCache,
   ApolloProvider,
   useMutation,
+  HttpLink,
+  from,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
@@ -33,6 +35,19 @@ const theme = {
 };
 let token: any;
 
+const httpLink = new HttpLink({ uri: "http://192.168.43.189:400" });
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  }
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
 export default function App() {
   const withToken = setContext(async () => {
     if (token) {
@@ -43,8 +58,8 @@ export default function App() {
   });
 
   const client = new ApolloClient({
-    uri: "http://192.168.43.189:400",
     cache: new InMemoryCache(),
+    link: from([errorLink, httpLink]),
   });
 
   const Tabs = createBottomTabNavigator();
