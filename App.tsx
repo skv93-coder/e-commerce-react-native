@@ -1,12 +1,12 @@
 import { Entypo, FontAwesome5, AntDesign } from "@expo/vector-icons";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  useMutation,
   HttpLink,
   from,
+  ApolloLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
@@ -18,12 +18,12 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./screens/Home";
 import Shop from "./screens/Shop";
 import ProductView from "./screens/ProductView";
-import WishList from "./screens/WishList";
+import NotLoggedIn from "./screens/NotLoggedIn";
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
-import { useEffect } from "react";
-import AsyncStorageLib from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 import { LOGIN_USER } from "./Api/User/mutation";
+import WishList from "./screens/WishList";
 
 const theme = {
   ...DefaultTheme,
@@ -35,47 +35,90 @@ const theme = {
 };
 let token: any;
 
-const httpLink = new HttpLink({ uri: "http://192.168.43.189:400" });
-
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors) {
-    graphQLErrors.forEach(({ message, locations, path }) =>
-      console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-      )
-    );
-  }
-  if (networkError) console.log(`[Network error]: ${networkError}`);
-});
+const httpLink = new HttpLink({ uri: "http://192.168.77.189:400" });
 
 export default function App() {
-  const withToken = setContext(async () => {
-    if (token) {
-      return { token };
-    }
-    token = await AsyncStorage.getItem("token");
-    return { token };
-  });
+  const [token, setToken] = useState<boolean>(false);
 
+  const authLink = new ApolloLink((operation, forward) => {
+    if (token) {
+      operation.setContext(({ headers }: any) => ({
+        headers: { Authorization: token, ...headers },
+      }));
+    }
+    return forward(operation).map((data: any) => {
+      console.log("data", data);
+      if (data.token) {
+        setToken(token);
+      }
+      return data;
+    });
+  });
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors) {
+      graphQLErrors.forEach(({ message, locations, path }) => {
+        if (message.includes("Unauthorized")) {
+          AsyncStorage.removeItem("token");
+          setToken(false);
+        }
+        console.log(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        );
+      });
+    }
+    if (networkError) console.log(`[Network error]: ${networkError}`);
+  });
   const client = new ApolloClient({
     cache: new InMemoryCache(),
-    link: from([errorLink, httpLink]),
+    link: from([errorLink, authLink, httpLink]),
   });
 
   const Tabs = createBottomTabNavigator();
   const Stack = createNativeStackNavigator();
-  // console.log("client", client.cache);
-
+  console.log("token :>> ", token);
   const WishListStack = () => (
     <Stack.Navigator>
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="WishList"
-        component={WishList}
-      />
-      {/* <Stack.Screen name="SignUpView" component={SignUpView} /> */}
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="SignUp" component={SignUp} />
+      {token ? (
+        <>
+          <Stack.Screen
+            options={{
+              title: "WishList",
+              headerTitleAlign: "center",
+              headerTitle: () => (
+                <Text
+                  style={{
+                    backgroundColor: "white",
+                    fontSize: 18,
+                    fontWeight: "600",
+                  }}
+                >
+                  WishList
+                </Text>
+              ),
+              headerLeft: () => (
+                <AntDesign name="search1" size={24} color="black" />
+              ),
+              headerRight: () => (
+                <AntDesign name="shoppingcart" size={24} color="black" />
+              ),
+            }}
+            name="WishList"
+            component={WishList}
+          />
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="SignUp" component={SignUp} />
+        </>
+      ) : (
+        <>
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="WishList"
+            component={NotLoggedIn}
+          />
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="SignUp" component={SignUp} />
+        </>
+      )}
     </Stack.Navigator>
   );
   const HomeStack = () => (
@@ -150,16 +193,11 @@ export default function App() {
       />
     </Tabs.Navigator>
   );
-  const authChecker = async () => {
-    const token = await AsyncStorage.getItem("token");
-    console.log("token", token);
-    if (token) {
-    }
-  };
-
   useEffect(() => {
-    authChecker();
-  }, [AsyncStorageLib]);
+    AsyncStorage.getItem("token").then((res: any) => {
+      setToken(res);
+    });
+  }, []);
 
   return (
     <ApolloProvider client={client}>

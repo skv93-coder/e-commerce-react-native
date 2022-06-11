@@ -10,4 +10,5 @@ export default StyleSheet.create({
     color: "red",
     fontSize: 16,
   },
+  wishItem: {},
 });
