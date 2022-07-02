@@ -35,7 +35,7 @@ const theme = {
 };
 let token: any;
 
-const httpLink = new HttpLink({ uri: "http://192.168.77.189:400" });
+const httpLink = new HttpLink({ uri: "http:/192.168.127.189:400" });
 
 export default function App() {
   const [token, setToken] = useState<boolean>(false);
@@ -47,9 +47,10 @@ export default function App() {
       }));
     }
     return forward(operation).map((data: any) => {
-      console.log("data", data);
-      if (data.token) {
-        setToken(token);
+      console.log("data", data.data.userCreate.token);
+      if (data?.data?.userCreate?.token) {
+        setToken(data.data.userCreate.token);
+        AsyncStorage.setItem("token", data.data.userCreate.token);
       }
       return data;
     });
@@ -75,7 +76,7 @@ export default function App() {
 
   const Tabs = createBottomTabNavigator();
   const Stack = createNativeStackNavigator();
-  console.log("token :>> ", token);
+
   const WishListStack = () => (
     <Stack.Navigator>
       {token ? (
@@ -193,6 +194,7 @@ export default function App() {
       />
     </Tabs.Navigator>
   );
+
   useEffect(() => {
     AsyncStorage.getItem("token").then((res: any) => {
       setToken(res);

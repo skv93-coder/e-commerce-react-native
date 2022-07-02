@@ -29,7 +29,7 @@ const signUpSchema = Yup.object().shape({
 export default function SignUp({ navigation }) {
   const [createUser, { loading, reset, data, error }] =
     useMutation(CREATE_USER);
-  console.log("res :>> ", data, error);
+
   const ref = React.useRef({
     name: null,
     email: null,
