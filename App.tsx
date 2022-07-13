@@ -47,10 +47,13 @@ export default function App() {
       }));
     }
     return forward(operation).map((data: any) => {
-      console.log("data", data.data.userCreate.token);
-      if (data?.data?.userCreate?.token) {
-        setToken(data.data.userCreate.token);
-        AsyncStorage.setItem("token", data.data.userCreate.token);
+      console.log("data", data);
+      if (data?.data?.userCreate?.token || data?.data?.login?.token) {
+        setToken(data?.data?.userCreate?.token || data?.data?.login?.token);
+        AsyncStorage.setItem(
+          "token",
+          data?.data?.userCreate?.token || data?.data?.login?.token
+        );
       }
       return data;
     });
@@ -199,6 +202,7 @@ export default function App() {
     AsyncStorage.getItem("token").then((res: any) => {
       setToken(res);
     });
+    // AsyncStorage.removeItem("token");
   }, []);
 
   return (
