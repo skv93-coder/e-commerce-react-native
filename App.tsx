@@ -35,7 +35,7 @@ const theme = {
 };
 let token: any;
 
-const httpLink = new HttpLink({ uri: "http:/192.168.127.189:400" });
+const httpLink = new HttpLink({ uri: "http:/192.168.131.189:400" });
 
 export default function App() {
   const [token, setToken] = useState<boolean>(false);

@@ -1,11 +1,20 @@
-import React from "react";
-import { Dimensions, FlatList, Image, Text, View } from "react-native";
-import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Entypo, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import SafeAreaViewCustom from "../../componets/SafeArea";
+import React from "react";
+import { useState } from "react";
 
 const { height, width } = Dimensions.get("window");
 
 export default function WishList() {
+  const [toggle, setToggle] = useState(false);
   return (
     <View style={{ backgroundColor: "white", height, width, flex: 1 }}>
       <FlatList
@@ -18,20 +27,65 @@ export default function WishList() {
               paddingVertical: 8,
               paddingLeft: 8,
               flexDirection: "row",
-              height: height * 0.12,
+              height: height * 0.3,
+              borderColor: "#f0eded",
+              borderTopWidth: 10,
             }}
           >
-            <Image
-              source={{
-                uri: "https://img.freepik.com/free-photo/girl-winter-city_1157-17487.jpg?w=1060",
-              }}
-              style={{
-                width: width * 0.21,
-                height: "100%",
-                borderRadius: 8,
-              }}
-            />
-            <View
+            <View style={{ height: "100%" }}>
+              <View style={{ backgroundColor: "red", height: "40%" }}>
+                <Image
+                  source={{
+                    uri: "https://img.freepik.com/free-photo/girl-winter-city_1157-17487.jpg?w=1060",
+                  }}
+                  style={{
+                    width: width * 0.21,
+                    borderRadius: 8,
+                    height: "100%",
+                    // margin
+                  }}
+                />
+              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  setToggle((prev) => !prev);
+                }}
+              >
+                <View
+                  style={{
+                    borderColor: "#ccc",
+                    borderWidth: 1,
+                    marginTop: 8,
+                    borderRadius: 4,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    paddingHorizontal: 8,
+                  }}
+                >
+                  {toggle ? (
+                    <View
+                      style={{
+                        flex: 1,
+                        backgroundColor: "white",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Text style={{ padding: 8 }}>1</Text>
+                      <Text>2</Text>
+                      <Text>3</Text>
+                    </View>
+                  ) : (
+                    <>
+                      <Text>Qty: 1</Text>
+                      <AntDesign name="caretdown" size={12} color="black" />
+                    </>
+                  )}
+                </View>
+              </TouchableOpacity>
+            </View>
+
+            {/* <View
               style={{
                 width: width * 0.75,
                 paddingLeft: width * 0.04,
@@ -42,23 +96,25 @@ export default function WishList() {
             >
               <View
                 style={{
-                  justifyContent: "space-between",
+                  // justifyContent: "space-between",
                   height: "100%",
                 }}
               >
+               
                 <Text
-                  style={{ fontWeight: "500", fontSize: 14, color: "gray" }}
+                  style={{ fontWeight: "500", fontSize: 16, color: "black" }}
                 >
-                  Women's Jacket
+                 MarQ By Flipkart 190L Direct 
                 </Text>
-                <Text
+               <View style={{paddingTop:50}}>
+               <Text
                   style={{ fontWeight: "500", fontSize: 14, color: "black" }}
                 >
-                  $300.00
+                   $300.00
                 </Text>
+                </View>
               </View>
-              <Entypo name="cross" size={24} color="black" />
-            </View>
+               </View> */}
           </View>
         )}
       />
