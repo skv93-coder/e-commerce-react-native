@@ -27,7 +27,7 @@ export default function WishList() {
               paddingVertical: 8,
               paddingLeft: 8,
               flexDirection: "row",
-              height: height * 0.3,
+              height: height * 0.25,
               borderColor: "#f0eded",
               borderTopWidth: 10,
             }}
@@ -61,23 +61,30 @@ export default function WishList() {
                     justifyContent: "space-between",
                     alignItems: "center",
                     paddingHorizontal: 8,
+                    backgroundColor: "white",
+                    paddingVertical: 8,
                   }}
                 >
                   {toggle ? (
                     <View
                       style={{
-                        flex: 1,
-                        backgroundColor: "white",
                         alignItems: "center",
+                        flexDirection: "column",
+                        flex: 1,
                       }}
                     >
-                      <Text style={{ padding: 8 }}>1</Text>
-                      <Text>2</Text>
-                      <Text>3</Text>
+                      <Text style={{ textAlign: "center" }}>1</Text>
+                      <Text style={{ textAlign: "center", paddingVertical: 4 }}>
+                        2
+                      </Text>
+                      <Text style={{ textAlign: "center" }}>3</Text>
+                      <Text style={{ textAlign: "center", paddingTop: 4 }}>
+                        more
+                      </Text>
                     </View>
                   ) : (
                     <>
-                      <Text>Qty: 1</Text>
+                      <Text style={{ color: "black" }}>Qty: 1</Text>
                       <AntDesign name="caretdown" size={12} color="black" />
                     </>
                   )}
@@ -85,7 +92,7 @@ export default function WishList() {
               </TouchableOpacity>
             </View>
 
-            {/* <View
+            <View
               style={{
                 width: width * 0.75,
                 paddingLeft: width * 0.04,
@@ -96,25 +103,62 @@ export default function WishList() {
             >
               <View
                 style={{
-                  // justifyContent: "space-between",
                   height: "100%",
+                  width: "100%",
                 }}
               >
-               
                 <Text
-                  style={{ fontWeight: "500", fontSize: 16, color: "black" }}
+                  style={{
+                    fontWeight: "500",
+                    fontSize: 16,
+                    color: "black",
+                    width: "100%",
+                  }}
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
                 >
-                 MarQ By Flipkart 190L Direct 
+                  MarQ By Flipkart 190L Direct MarQ By Flipkart 190L Direct MarQ
+                  By Flipkart 190L Direct
                 </Text>
-               <View style={{paddingTop:50}}>
-               <Text
-                  style={{ fontWeight: "500", fontSize: 14, color: "black" }}
-                >
-                   $300.00
-                </Text>
+                <Text style={{ color: "#d8d8d8" }}>Moon sliver, CD10882</Text>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View
+                    style={{
+                      backgroundColor: "green",
+                      width: "20%",
+                      padding: 3,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      borderRadius: 3,
+                      marginTop: 6,
+                    }}
+                  >
+                    <Text style={{ color: "white" }}>
+                      {" "}
+                      4.1 <AntDesign name="star" size={12} color="white" />
+                    </Text>
+                  </View>
+                  <Text style={{ color: "#d8d8d8", paddingLeft: 4 }}>
+                    (8,475)
+                  </Text>
+                </View>
+                <View style={{ paddingTop: 35 }}>
+                  <Text
+                    style={{ fontWeight: "500", fontSize: 16, color: "black" }}
+                  >
+                    <Text
+                      style={{
+                        textDecorationLine: "line-through",
+                        color: "#d8d8d8",
+                      }}
+                    >
+                      $200{" "}
+                    </Text>{" "}
+                    $300 <Text style={{ color: "green" }}>10% off</Text>
+                  </Text>
                 </View>
               </View>
-               </View> */}
+            </View>
           </View>
         )}
       />
