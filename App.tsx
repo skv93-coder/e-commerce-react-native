@@ -24,6 +24,7 @@ import SignUp from "./screens/SignUp";
 import { useEffect, useState } from "react";
 import { LOGIN_USER } from "./Api/User/mutation";
 import WishList from "./screens/WishList";
+import Cart from "./screens/Cart";
 
 const theme = {
   ...DefaultTheme,
@@ -35,7 +36,7 @@ const theme = {
 };
 let token: any;
 
-const httpLink = new HttpLink({ uri: "http:/192.168.131.189:400" });
+const httpLink = new HttpLink({ uri: "http://192.168.13.189:400" });
 
 export default function App() {
   const [token, setToken] = useState<boolean>(false);
@@ -179,7 +180,7 @@ export default function App() {
           tabBarShowLabel: false,
         }}
         name="Shop-2"
-        component={Shop}
+        component={Cart}
       />
       <Tabs.Screen
         options={{
